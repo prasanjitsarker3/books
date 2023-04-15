@@ -32,7 +32,9 @@ const router = createBrowserRouter([
       },
       {
         path:"order",
-        element:<Order></Order>
+        element:<Order></Order>,
+        loader:  ()=> fetch('https://api.itbook.store/1.0/new')
+
       },
       {
         path:"loader",

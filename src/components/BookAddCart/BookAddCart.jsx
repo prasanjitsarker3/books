@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLoaderData, useNavigation } from 'react-router-dom';
 import LoaderSpinner from '../LoaderSpinner/LoaderSpinner';
+import { addToDb } from '../../utilities/fakedb';
 
 const BookAddCart = () => {
     const navigation = useNavigation()
@@ -10,7 +11,11 @@ const BookAddCart = () => {
     }
     const bookData = useLoaderData()
     const [fold, setFold] = useState(true)
-    const { image, title, desc, authors, publisher, year, rating, url, price } = bookData;
+    const { image, title, desc, authors, publisher, year, rating, url, price,isbn13} = bookData;
+    
+    const addToOrder=(id)=>{
+          addToDb(id);
+    }
 
     return (
         <div className='my-container'>
@@ -59,7 +64,7 @@ const BookAddCart = () => {
                     )}
 
                     <div className='flex gap-5 mt-8 items-center'>
-                        <a href={url} target='_blank' className='btn'>
+                        <a onClick={()=>addToOrder(isbn13)}  className='btn'>
                             Buy Now
                         </a>
                         <p className='items-center font-extrabold text-gray-600 '>
