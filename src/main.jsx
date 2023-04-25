@@ -9,36 +9,50 @@ import Order from './components/Order/Order'
 import BookAddCart from './components/BookAddCart/BookAddCart'
 import LoaderSpinner from './components/LoaderSpinner/LoaderSpinner'
 import ErrorPage from './components/ErrorPage/ErrorPage'
+import Login from './components/VerificationPage/Login'
+import Register from './components/VerificationPage/Register'
+import AuthProvider from './provider/AuthProvider'
+import PrivateRoute from './PrivateRoute/PrivateRoute'
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element:<App></App>,
-    errorElement:<ErrorPage></ErrorPage>,
-    children:[
+    element: <App></App>,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
       {
-        path:"/",
-        element:<Home></Home>
+        path: "/",
+        element: <Home></Home>
       },
       {
-        path:"books",
-        element:<Books></Books>,
-        loader: ()=> fetch('https://api.itbook.store/1.0/new')
+        path: "books",
+        element: <Books></Books>,
+        loader: () => fetch('https://api.itbook.store/1.0/new')
       },
       {
-        path:"book/:bookId",
-        element:<BookAddCart/>,
-        loader: ({params})=> fetch(`https://api.itbook.store/1.0/books/${params.bookId}`)
+        path: "book/:bookId",
+        element: <BookAddCart />,
+        loader: ({ params }) => fetch(`https://api.itbook.store/1.0/books/${params.bookId}`)
       },
       {
-        path:"order",
-        element:<Order></Order>,
-        loader:  ()=> fetch('https://api.itbook.store/1.0/new')
+        path: "order",
+        element: <PrivateRoute><Order></Order></PrivateRoute>,
+        loader: () => fetch('https://api.itbook.store/1.0/new')
 
       },
       {
-        path:"loader",
-        element:<LoaderSpinner/>
+        path: 'login',
+        element: <Login></Login>
+
+      },
+      {
+        path: 'register',
+        element: <Register></Register>
+      }
+      ,
+      {
+        path: "loader",
+        element: <LoaderSpinner />
       }
     ]
   }
@@ -46,6 +60,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )
